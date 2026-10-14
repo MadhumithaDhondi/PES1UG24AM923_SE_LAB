@@ -1,0 +1,17 @@
+# Static Code Analysis – Issues Table
+
+| Issue                                       | Type                              | Line(s)                              | Description                                                                                                                  | Fix Approach                                                                                                  |
+| ------------------------------------------- | --------------------------------- | ------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| Hardcoded ERP API key                       | Security – High                   | Original ERP synchronization section | A sensitive API key was stored directly in the source code. Anyone with access to the code could read it.                    | Removed the hardcoded key and used the `ERP_API_KEY` environment variable instead.                            |
+| Disabled SSL certificate verification       | Security – High                   | Original ERP request section         | Disabling SSL verification can expose communication to man-in-the-middle attacks.                                            | Removed insecure certificate-verification settings and used secure HTTPS verification with a request timeout. |
+| Unsafe shell command execution              | Security – High                   | Original reminder/backup section     | Passing commands through a shell can introduce command-injection risks.                                                      | Avoided shell-based command execution and used safer argument handling.                                       |
+| Missing request timeout                     | Security and reliability – Medium | Original ERP request section         | A network request without a timeout may remain blocked for an excessive amount of time.                                      | Added a 10-second timeout to the network request.                                                             |
+| Incorrect attendance register handling      | Logic – Medium                    | Attendance register section          | The register was not initialized or handled correctly in all execution paths, which could cause errors or incorrect results. | Initialized the register before use and corrected its handling.                                               |
+| Poor naming and code documentation          | Code quality – Low                | Multiple locations                   | Inconsistent function naming and missing documentation made the program harder to read and maintain.                         | Used clearer snake_case names and added docstrings where required.                                            |
+| Inconsistent formatting and lint violations | Style – Low                       | Multiple locations                   | Formatting problems and lint violations reduced readability and code consistency.                                            | Corrected the reported issues and reran Flake8 and Pylint.                                                    |
+
+## Verification
+
+* Pylint final score: 10.00/10.
+* Bandit final report: 0 high, 0 medium, and 0 low findings.
+* Flake8 final report: no reported style errors.
